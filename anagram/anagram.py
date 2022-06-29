@@ -1,6 +1,7 @@
 def main():
     data = read_file('wordlist.txt')
-    print(data)
+    data_dict = create_dictionary(data)
+    print(filter_anagrams(data_dict))
 
 
 def read_file(file) -> list:
@@ -9,11 +10,22 @@ def read_file(file) -> list:
         return data
 
 
-def is_anagram(x: str, y: str) -> bool:
-    if len(x) != len(y):
-        return False
-    else:
-        return sorted(x) == sorted(y)
+def create_dictionary(data) -> dict:
+    data_dict = {}
+    for i in data:
+        if tuple(sorted(i)) in data_dict:
+            data_dict[tuple(sorted(i))].append(i)
+        else:
+            data_dict[tuple(sorted(i))] = [i]
+    return data_dict
+
+
+def filter_anagrams(data_dict) -> dict:
+    filtered_data_dict = {}
+    for key, value in data_dict.items():
+        if len(value) > 1:
+            filtered_data_dict[key] = value
+    return filtered_data_dict
 
 
 if __name__ == '__main__':
